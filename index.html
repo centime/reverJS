@@ -1,0 +1,187 @@
+<html>
+<head>
+  <title>reverJS - the Reverse Javascript Constructor</title>
+  <meta name="description" content="jsf$ck is a fork from JSFuck, that doesn't use parenthesis.">
+  <meta charset="utf-8" />
+  <meta property="og:image" content="http://www.jsfuck.com/preview.png" />
+  <meta name="viewport" content="width=device-width" />
+  <style>
+    
+    body {
+      padding: 20px;
+    }
+    
+    body, * {
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.4em;
+    }
+    
+    h1 {
+      font-size: 2em;
+      top: 70px;
+      font-weight: normal;
+      left: 140px;
+    }
+    
+    h2 {
+      width: 90px;
+      text-align: right;
+      padding: 50px 5px 5px;
+      background: #F0DB4E;
+      color: #323230;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 1.2em;
+    }
+    
+    h3 {
+      font-weight: bold;
+    }
+        
+    p, li, textarea, {
+      width: 100%;
+      max-width: 700px;
+    }
+    
+    textarea, pre {
+      height: 500px;
+      width: 600px;
+      float:left;
+      display: inline-block;
+    }
+    textarea{
+      margin-top: 33px;
+    }
+    #output{
+      height: 600px !important;
+    }
+    button{display: block;}
+    
+    
+  </style>
+  <link rel="stylesheet" href="lib/default.min.css">
+  <script src="lib/highlight.min.js"></script>
+  <script src="lib/esprima.js"></script>
+</head>
+<body>
+    <h1>reverJS - the Reverse Javascript Constructor</h1>
+    <button id="run">Run This</button>
+<textarea id="input">
+      /*   Plain-text fibonacci on the left.         */
+      /*   ReverJS'd fibonacci on the right.         */
+      /*   "Run this" to run the reversed code       */
+
+var fibonacci = function(){
+  var input = document.getElementById('input');
+  input.value = input.value.replace(
+  /\n\/. Fibo:(.|\s)*(\s+\d+,\s*\d+)\s\*\//g,
+  function(start, _, end){
+    return start.slice(0,-3) + ', '
+           + eval(end.replace(',', '+'))
+           + ' */'
+  })
+  reverse();
+}();
+
+/* Fibo: 0, 1, 1, 2, 3, 5, 8,
+ 13, 21, 34, 55 */
+</textarea>
+  
+    
+    <pre>
+      <code id="output" style="height:300px" class="js"></code>
+    </pre>
+
+  <script>
+
+  // warning: does not run in parent scope, nor return anything
+  /*
+    Breaks:
+      -run
+          a=1;alert(`${a}`)
+          lastline = //comment
+      -symmetry
+          `
+          \*
+  */
+
+    reverJS = function(){
+      var $$={'$':
+        "/*************************************************************/\n"+
+        "/*               http://centime.org/reverJS          */(([[[0][\n"+
+        "/*    Reverse                                 */($$$=>'reverse'\n"+
+        "/*    Javascript                       */)($$$=[0]['javascript'\n"+
+        "/*    Constructor                 */])]][0][($$$=>'constructor'\n"+
+        "/*                */)( $$$= [0]['constructor'])]][0])( `",
+        '$$':'replace','$$$':'length',
+        '$$$$':($=>$.split('').reverse().join('')[$$.$$](
+          /\(|\)|\[|\]|\{|\}|\\|\/|<|>/g,$=>({
+            '(':')',')':'(','[':']',']':'[',
+            '{':'}','}':'{','\\':'/','/':'\\','<':'>','>':'<'
+          })[$])),
+        '$$$$$':($=>($=$.split('\n'))[0]
+          +($[$$.$$$]>1?'\n':'')
+          +$.slice(1).map($=>Array(Math.max(
+              ($$.$.indexOf('\n')+1)-$[$$.$$$],0
+            )).join(' ')
+          +$).join('\n')),
+        '$$$$$$':($=>($$$=Array(Math.floor(Math.max(
+            1+(($$.$.split('\n')[0][$$.$$$])
+            -(($$$=$[1].split('\n'))[$$$[$$.$$$]-1][$$.$$$]*2)
+            -($[0][$$.$$$]))/2,
+            0
+          ))).join(' '))+$[0]+$$$
+          )
+        };
+        return ($=>$$.$+'\\ /**\\/\n'
+          +($=$[$$.$$](/\\/g,'\\\\')
+             [$$.$$](/`/g,'\\`')
+             [$$.$$]('*/','*\\/','g')
+            )
+          +$$.$$$$$$(['`+\'\\ /*\\ \/\'+`',$])
+          +$$.$$$$$(
+            $$.$$$$($)[$$.$$](/(\\)*`/g,'\\`')
+                      [$$.$$](RegExp('\\'+'*/','g'),'* /')
+            )
+          +'\n\\ /**\\/'
+          +$$.$$$$($$.$)[$$.$$](/\\/g,'/')
+        )
+      }()
+
+    function $(id){
+      return document.getElementById(id);
+    }
+
+    var rawOutput = '';   
+
+    function reverse(){
+      var output = reverJS($("input").value);
+      $("output").innerHTML = output.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      rawOutput = output;
+      hljs.highlightBlock($("output"));
+    }
+
+    $("input").oninput = reverse;
+    
+    $("run").onclick = function(){
+      var errors = false;
+      try {
+        esprima.parse($("input").value, { tolerant: true, loc: true });
+      } catch (e) {
+        errors = true;
+        alert('Your code contains errors');
+      }
+      if (!errors) {
+        eval(rawOutput);
+      }
+      return false;
+    };
+    
+    reverse();
+    hljs.highlightBlock($("output"));
+
+  </script>
+
+</body>
+</html>
