@@ -96,24 +96,45 @@ var fibonacci = function(){
   <script>
 
   // warning: does not run in parent scope, nor return anything
+  // polutes this.$$$
+  // FIX: 
+  /*
+(
+($$$=Function)
+('\ /**\/'+'console.log(1);1+1'+'\ /*\ /'+'zob'+'\ /**\/')
+(noitcnuF=$$$)
+)
+
+(
+  (eval)
+    ('lave=Function(["k"],"return function(){return function(){return eval(k)}}")')
+      ('\ /**\/'+'console.log(1);1+1'+'\ /*\ /'+'zob'+'\ /**\/')
+    ('zob')
+  (lave)
+)
+
+
+  */
   /*
     Breaks:
       -run
-          a=1;alert(`${a}`)
-          lastline = //comment
+          a=1;alert(`${a}`) -->escape ${
+          lastline = //comment --> if(...){+'\n'}
       -symmetry
           `
           \*
   */
 
-    reverJS = function(){
+  // Warning: "reverJS" and "SJrever" are defined in the context the code is ran in. But can be rewritten safely.
+    reverJS = ($=>{
       var $$={'$':
-        "/*************************************************************/\n"+
-        "/*               http://centime.org/reverJS          */(([[[0][\n"+
-        "/*    Reverse                                 */($$$=>'reverse'\n"+
-        "/*    Javascript                       */)($$$=[0]['javascript'\n"+
-        "/*    Constructor                 */])]][0][($$$=>'constructor'\n"+
-        "/*                */)( $$$= [0]['constructor'])]][0])( `",
+        '/****************************************************************/\n'+
+        '/*                http://centime.org/reverJS                    */\n'+
+        '/*    Reverse                                   */([[[0]["reverse"\n'+
+        '/*    Javascript                            */]][0+!!+"javascript"\n'+
+        '/*    Constructor                           */+!!+0]["constructor"\n'+
+        '/*              */]][0](["reverJS"],["return"][0+!!+"~palindromes"\n'+
+        '+!!+0]+" (SJrever=>"+[[]+!+[]][0][3]+"val"+"(reverJS))"))(`',
         '$$':'replace','$$$':'length',
         '$$$$':($=>$.split('').reverse().join('')[$$.$$](
           /\(|\)|\[|\]|\{|\}|\\|\/|<|>/g,$=>({
@@ -147,7 +168,7 @@ var fibonacci = function(){
           +'\n\\ /**\\/'
           +$$.$$$$($$.$)[$$.$$](/\\/g,'/')
         )
-      }()
+      })()
 
     function $(id){
       return document.getElementById(id);
