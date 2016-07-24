@@ -51,12 +51,13 @@
       display: inline-block;
     }
     textarea{
-      margin-top: 33px;
+      margin-top: 60px;
     }
     #output{
       height: 600px !important;
     }
     button{display: block;}
+    #mandel{float: right;}
     
     
   </style>
@@ -67,6 +68,7 @@
 <body>
     <h1>reverJS - the Reverse Javascript Constructor</h1>
     <button id="run">Run This</button>
+    <button id="mandel">MandelCode example (by AEMKEI)</button>
 <textarea id="input">
       /*   Plain-text fibonacci on the left.         */
       /*   ReverJS'd fibonacci on the right.         */
@@ -94,47 +96,25 @@ var fibonacci = function(){
     </pre>
 
   <script>
-
-  // warning: does not run in parent scope, nor return anything
-  // polutes this.$$$
-  // FIX: 
-  /*
-(
-($$$=Function)
-('\ /**\/'+'console.log(1);1+1'+'\ /*\ /'+'zob'+'\ /**\/')
-(noitcnuF=$$$)
-)
-
-(
-  (eval)
-    ('lave=Function(["k"],"return function(){return function(){return eval(k)}}")')
-      ('\ /**\/'+'console.log(1);1+1'+'\ /*\ /'+'zob'+'\ /**\/')
-    ('zob')
-  (lave)
-)
-
-
-  */
-  /*
-    Breaks:
-      -run
-          a=1;alert(`${a}`) -->escape ${
-          lastline = //comment --> if(...){+'\n'}
-      -symmetry
-          `
-          \*
-  */
-
+/**/
+    // Breaks:
+    //   -run
+          // }}$$
+          // }*$
+    //       lastline = //comment --> if(...){+'\n'}
+    //   -symmetry
+    //       `
+    
   // Warning: "reverJS" and "SJrever" are defined in the context the code is ran in. But can be rewritten safely.
-    reverJS = ($=>{
+    var reverJS = ($=>{
       var $$={'$':
-        '/****************************************************************/\n'+
+        '/*****************************************************************/\n'+
         '/*                http://centime.org/reverJS                    */\n'+
-        '/*    Reverse                                   */([[[0]["reverse"\n'+
-        '/*    Javascript                            */]][0+!!+"javascript"\n'+
-        '/*    Constructor                           */+!!+0]["constructor"\n'+
-        '/*              */]][0](["reverJS"],["return"][0+!!+"~palindromes"\n'+
-        '+!!+0]+" (SJrever=>"+[[]+!+[]][0][3]+"val"+"(reverJS))"))(`',
+        '/*     Reverse                                   */([[[0]["reverse"\n'+
+        '/*     Javascript                            */]][0+!!+"javascript"\n'+
+        '/*     Constructor                           */+!!+0]["constructor"\n'+
+        '/*               */]][0](["reverJS"],["return"][0+!!+"~palindromes"\n'+
+        '+!!+0]+"  (SJrever=>"+[[]+!+[]][0][3]+"val"+"(reverJS))"))(`',
         '$$':'replace','$$$':'length',
         '$$$$':($=>$.split('').reverse().join('')[$$.$$](
           /\(|\)|\[|\]|\{|\}|\\|\/|<|>/g,$=>({
@@ -155,32 +135,34 @@ var fibonacci = function(){
           ))).join(' '))+$[0]+$$$
           )
         };
-        return ($=>$$.$+'\\ /**\\/\n'
+        return ($=>$$.$+'\\/**\\/\n'
           +($=$[$$.$$](/\\/g,'\\\\')
              [$$.$$](/`/g,'\\`')
-             [$$.$$]('*/','*\\/','g')
+             [$$.$$](/(\$\{|\}\$)+/g,($=>$.replace(/(.)/g,'${"$1"}')))
+             [$$.$$](/(\*)+/g,($=>'${"'+$+'"}'))
+             [$$.$$](/\//g,'\\/')
             )
           +$$.$$$$$$(['`+\'\\ /*\\ \/\'+`',$])
           +$$.$$$$$(
             $$.$$$$($)[$$.$$](/(\\)*`/g,'\\`')
-                      [$$.$$](RegExp('\\'+'*/','g'),'* /')
             )
-          +'\n\\ /**\\/'
+          +'\n\\/**\\/'
           +$$.$$$$($$.$)[$$.$$](/\\/g,'/')
-        )
+        ) 
       })()
 
     function $(id){
       return document.getElementById(id);
     }
 
-    var rawOutput = '';   
+    var rawOutput = '';
+    var outputElement = $("output");
 
     function reverse(){
       var output = reverJS($("input").value);
       $("output").innerHTML = output.replace(/</g,"&lt;").replace(/>/g,"&gt;");
       rawOutput = output;
-      hljs.highlightBlock($("output"));
+      hljs.highlightBlock(outputElement);
     }
 
     $("input").oninput = reverse;
@@ -200,7 +182,35 @@ var fibonacci = function(){
     };
     
     reverse();
-    hljs.highlightBlock($("output"));
+    hljs.highlightBlock(outputElement);
+
+    $("mandel").onclick = function(){
+      $("input").value = mandelCode;
+      hljs.highlightBlock(outputElement)
+    };
+
+    var mandelCode = `
+$('input').outerHTML='<pre id="P"></p>';
+setTimeout(function()
+{location=''},5000);              E
+                               =  1
+                            ,   z=1.07 ;
+                           function s(       a)
+                     {  for(a&&(E=!E),H="",z *=
+                      .9,T*=.8,Y=0;2>Y;Y+=.1)  {
+            for      (X=0;2>X;X+=.04){for(x=y=i
+          =0;99>i   &&99>=x*x+y*y;i++)t=2*x*y,x
+    =   x*x-y*y+z*X -z-Z/(1-T),y=t+z*Y-z-U;(/*
+ MANDELCODE=A-QUINE-BY-AEMKEI=CLICK-TO-ZOOM*/
+    H   )+="  .+#"[ i%5]}H+=n}!E&&setTimeout(s
+          ,99),P[   I]=H}Z=1.74909351846789013,
+            U  =     3.40220976e-7,onclick=s;n
+                      ="\\n";P.textContent="<"  +
+                        "pre id=P>\\n"+P[I= "i"+
+                           "nnerHTML"       ]
+                            T  /*aem1k*/
+                               =  -
+                        2`
 
   </script>
 
