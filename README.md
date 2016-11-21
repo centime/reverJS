@@ -1,10 +1,8 @@
 # reverJS - the Reverse Javascript Constructor
 
-Wrap your javascript code into a ~palindrome !
+Wrap your javascript code into a ~palindrome ! You will get **a symmetrical version of your code** (hopefully fully functional).
 
 ## Example
-
-Live examples at [http://centime.org/reverJS](http://centime.org/reverJS)
 
 ~palindrome for ``alert('reverJS')``:
 
@@ -26,19 +24,21 @@ alert('reverJS')                `,`                ('SJrever')trela
 /*****************************************************************/
 ```
 
-
+Generate ~palindromes for your own code at [http://centime.org/reverJS](http://centime.org/reverJS)
 
 ## Wrap your javascript code into a ~palindrome
 
-It *doesn't rely on any comments trickery*, everything is about strings and arrays and crazy js behaviors !
+It **doesn't rely on any comments trickery**, everything is about strings and arrays and crazy js behaviors !
 
-* Disclaimer: *a ~palindrome is not a real palindrome*.
+* Disclaimer: **a ~palindrome is not a real palindrome**.
 
     alert([1]) :
+
     palindromic reverse: )]1[(trela
+
     ~palindromic reverse: ([1])trela
 
-Special characters which have a symmetrical counterpart are using said counterpart to achieve symmetry. Such characters are: *()[]{}\/<>*
+Special characters which have a symmetrical counterpart are using said counterpart to achieve symmetry. Such characters are: **()[]{}\/<>**
 
 * Warning: *might not be suited for production*.
 
@@ -48,7 +48,7 @@ Who doesn't like palindromes ?
 
 ## How?
 
-The idea will be to wrap the input into some code that evaluates it, but can be put before as well as after it without raising exceptions. We will use a lot of *strings that are effectively ignored*. Such as in: *eval("INPUT_CODE","EDOC_TUPNI")*.
+The idea will be to wrap the input into some code that evaluates it, but can be put before as well as after it without raising exceptions. We will use a lot of **strings that are effectively ignored**. Such as in: **eval("INPUT_CODE","EDOC_TUPNI")**.
 
 ```js
 // using silent parameters in eval:
@@ -58,9 +58,9 @@ eval("INPUT_CODE","EDOC_TUPNI")
 Function(["var1"],"return (_=>eval(var1))")("INPUT_CODE","EDOC_TUPNI")()
 ```
 
-"Function" can be accessed with *[]["reverse"]["constructor"]*, but the reverse (*["rotcurtsnoc"]["esrever"][]*) is invalid syntax.
+"Function" can be accessed with **[]["reverse"]["constructor"]**, but the reverse (**["rotcurtsnoc"]["esrever"][]**) is invalid syntax.
 
-Fortunately, we can rewrite it like this: *[[0]["reverse"]][0]["constructor"]*, which reverse, *["rotcurtsnoc"][0][["esrever"][0]]*, quietly returns undefined.
+Fortunately, we can rewrite it like this: **[[0]["reverse"]][0]["constructor"]**, which reverse, **["rotcurtsnoc"][0][["esrever"][0]]**, quietly returns undefined.
 
 Thus, the following is symmetrical and allows us to execute some code:
 
@@ -112,11 +112,11 @@ Adding some complexity just because we can:
 )
 ```
 
-Now that the wrapper is working, all there is left to do is to prepare INPUT_CODE, as a string, to go into our eval function. Since we're using multi-lines strings declared with `, we want to escape this character. But *we need both the original and the symmetric to be escaped*, so \`, which reverse is `/, won't do it.
+Now that the wrapper is working, all there is left to do is to prepare INPUT_CODE, as a string, to go into our eval function. Since we're using multi-lines strings declared with \`, we want to escape this character. But **we need both the original and the symmetric to be escaped**, so \\\`, which reverse is \`/, won't do it.
 
-The trick I used rely on the inline expressions you can put in template literals. *`${'`/'[0]}`* returns '`', and the reverse *`{[0]'\`'}$`* makes the inner ` harmless.
+The trick I used rely on the inline expressions you can put in template literals. **\`${'\`/'[0]}`** returns '\\\`', and the reverse **\`{[0]'\\\`'}$\`** makes the inner \` harmless.
 
-Since the above solution could break in situations The trick I used rely on the inline expressions you can put in template literals. *`${'`/'[0]}`* returns '`', and the reverse *`{[0]'\`'}$`* makes the inner ` harmless.
+Since the above solution could break in situations The trick I used rely on the inline expressions you can put in template literals. **\`${'\`/'[0]}\`** returns '\`', and the reverse **\`{[0]'\\\`'}$\`** makes the inner ` harmless.
 
 ```js
 (/`/g,"${['\`/'][0][0]}")
