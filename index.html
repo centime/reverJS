@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>reverJS - the Reverse Javascript Constructor</title>
+  <title>reverJS - Wrap your javascript code into a ~palindrome</title>
   <meta name="description" content="jsf$ck is a fork from JSFuck, that doesn't use parenthesis.">
   <meta charset="utf-8" />
   <meta property="og:image" content="http://www.jsfuck.com/preview.png" />
@@ -19,6 +19,7 @@
     
     h1 {
       font-size: 2em;
+      position: absolute;
       top: 70px;
       font-weight: normal;
       left: 140px;
@@ -39,26 +40,39 @@
       font-weight: bold;
     }
         
-    p, li, textarea, {
+    p, li, textarea, .actions {
       width: 100%;
       max-width: 700px;
     }
     
-    textarea, pre {
-      height: 500px;
-      width: 600px;
-      float:left;
-      display: inline-block;
+    textarea {
+      display: block;
+      height: 200px;
+      margin: 1em 0;
     }
-    textarea{
-      margin-top: 60px;
-    }
-    #output{
-      height: 600px !important;
-    }
-    button{display: block;}
-    #mandel{float: right;}
     
+    .text{
+      float: left;
+      max-width: 700px;
+      display:inline-block;
+      padding:10px
+    }
+    .code{
+      max-width: 700px;
+      display:inline-block;
+      padding:10px
+    }
+        
+    #input {
+      height: 200px;
+    }
+    pre {
+      width: 100%;
+      max-width: 700px;
+    }
+    pre *{
+      height: inherit !important;
+    }
     
   </style>
   <link rel="stylesheet" href="lib/default.min.css">
@@ -66,55 +80,157 @@
   <script src="lib/esprima.js"></script>
 </head>
 <body>
-    <h1>reverJS - the Reverse Javascript Constructor</h1>
-    <button id="run">Run This</button>
-    <button id="mandel">MandelCode example (by AEMKEI)</button>
+
+  <h1>reverJS - the Reverse Javascript Constructor</h1>
+  <h2>reverJS=<br>=SJrever</h2>
+
+<div class="code">
+  <p><strong>Input:</strong></p>
 <textarea id="input">
-      /*   Plain-text fibonacci on the left.         */
-      /*   ReverJS'd fibonacci on the right.         */
-      /*   "Run this" to run the reversed code       */
-
-var fibonacci = function(){
-  var input = document.getElementById('input');
-  input.value = input.value.replace(
-  /\n\/. Fibo:(.|\s)*(\s+\d+,\s*\d+)\s\*\//g,
-  function(start, _, end){
-    return start.slice(0,-3) + ', '
-           + eval(end.replace(',', '+'))
-           + ' */'
-  })
-  reverse();
-}();
-
-/* Fibo: 0, 1, 1, 2, 3, 5, 8,
- 13, 21, 34, 55 */
-</textarea>
-  
-    
+/*               Top: Plain-text code.                           */
+/*               Bottom: ReverJS'd code.                         */
+/*               "Run the output" to run the reversed code       */
+alert('reverJS')</textarea>
+    <p><strong>Output:</strong></p>
     <pre>
       <code id="output" style="height:300px" class="js"></code>
     </pre>
+    <button id="run">Run the output</button>
+    <button id="revDemo">reverJS example</button>
+    <button id="mandel">MandelCode example (by AEMKEI)</button>
+</div>
+<div class="text">
+  <h3>Wrap your javascript code into a ~palindrome</h3>
 
+  <p>
+    Put some js into the input area, and watch the magic happen! <strong>A symmetrical version of your code</strong>, (hopefully fully) functional, is in the output. Click "Run the output" to try it.
+  </p>
+
+  <p>
+    It <strong>doesn't rely on any comments trickery</strong>, everything is about strings and arrays and crazy js behaviors !
+  </p>
+
+  <p>
+    You can try some examples as well.
+  </p>
+
+  <p>
+    *Disclaimer: <strong>a ~palindrome is not a real palindrome</strong>. 
+    <ul>
+      alert([1]) :
+      <li>palindromic reverse: )]1[(trela</li>
+      <li>~palindromic reverse: ([1])trela</li>
+    </ul>
+
+    Special characters which have a symmetrical counterpart are using said counterpart to achieve symmetry. Such characters are: <strong>()[]{}\/&lt&gt</strong>
+  </p>
+  <p>
+    *Warning: <strong>might not be suited for production</strong>.
+  </p>
+
+  <h3>Why?</h3>
+  Who doesn't like palindromes ?
+
+  <h3>How?</h3>
+
+<p>
+ The idea will be to wrap the input into some code that evaluates it, but can be put before as well as after it without raising exceptions. We will use a lot of <strong>strings that are effectively ignored</strong>. Such as in: <strong>eval("INPUT_CODE","EDOC_TUPNI")</strong>.
+</p>
+
+<textarea style="height:120px">
+// using silent parameters in eval:
+eval("INPUT_CODE","EDOC_TUPNI")
+
+// using Function to create an "eval" function:
+Function(["var1"],"return (_=>eval(var1))")("INPUT_CODE","EDOC_TUPNI")()
+</textarea>
+<p>
+ "Function" can be accessed with <strong>[]["reverse"]["constructor"]</strong>, but the reverse (<strong>["rotcurtsnoc"]["esrever"][]</strong>) is invalid syntax. 
+</p><p>
+  Fortunately, we can rewrite it like this: <strong>[[0]["reverse"]][0]["constructor"]</strong>, which reverse, <strong>["rotcurtsnoc"][0][["esrever"][0]]</strong>, quietly returns <strong>undefined</strong>.
+</p>
+
+<p>
+  Thus, the following is symmetrical and allows us to execute some code:
+</p>
+<textarea>
+(
+([[0]["reverse"]][0]["constructor"])
+  ("INPUT_CODE")
+(["rotcurtsnoc"][0][["esrever"][0]])
+)
+</textarea>
+We will use this to return a closure that can be called with meaningless arguments, to execute INPUT_CODE:
+<textarea>
+(
+    (Function(["var1"],"return (_=>eval(var1))"))
+        ('INPUT_CODE',"EDOC_TUPNI")
+    (("whatever",["whatever"])[undefined])
+)
+</textarea>
+<p>
+ When we put all of this together:
+</p>
+<textarea>
+(
+    ([[[0]["reverse"]][0]["constructor"]][0](
+      ["reverJS"],"return (_=>eval(reverJS))"
+    ))
+        ('INPUT_CODE',"EDOC_TUPNI")
+    ((
+      "((SJrever)lave>=_) nruter",["SJrever"]
+    )[0][["rotcurtsnoc"][0][["esrever"][0]]])
+)
+</textarea>
+<p>
+ Adding some complexity just because we can:
+</p>
+<textarea>
+(
+    ([[[0]["reverse"]][0+!!+"javascript"+!!+0]["constructor"]][0](
+        ["reverJS"],["return"][0+!!+"~palindromes"+!!+0]
+        +"(_=>"+[[]+!+[]][0][3]+"val"+"(reverJS))")
+    )
+        ('INPUT_CODE',"EDOC_TUPNI")
+    (
+        ("((SJrever)"+"lav"+[3][0][[]+!+[]]+">=_)"+
+        [0+!!+"semordnilap~"+!!+0]["nruter"],["SJrever"]
+    )[0][["rotcurtsnoc"][0+!!+"tpircsavaj"+!!+0][["esrever"][0]]])
+)
+</textarea>
+<p>
+  Now that the wrapper is working, all there is left to do is to prepare INPUT_CODE, as a string, to go into our eval function. Since we're using multi-lines strings declared with <strong>`</strong>, we want to escape this character. But <strong>we need both the original and the symmetric to be escaped</strong>, so <strong>\`</strong>, which reverse is <strong>`/</strong>, won't do it.
+</p>
+<p>
+  The trick I used rely on the inline expressions you can put in template literals. <strong>`${'`/'[0]}`</strong> returns <strong>'`'</strong>, and the reverse <strong>`{[0]'\`'}$`</strong> makes the inner <strong>`</strong> harmless.
+</p>
+<p>
+  Since the above solution could break in situations The trick I used rely on the inline expressions you can put in template literals. <strong>`${'`/'[0]}`</strong> returns <strong>'`'</strong>, and the reverse <strong>`{[0]'\`'}$`</strong> makes the inner <strong>`</strong> harmless.
+</p>
+<textarea>
+(/`/g,"${['\`/'][0][0]}")
+</textarea>
+
+  <h3>Links</h3>
+  
+  <ul>
+    <li>*ping me: <a href="https://www.reddit.com/user/Centime/">/u/centime</a>, <a href="mailto:quelques.centimes@gmail.com">gmail</a> </li>
+    <li>View source on <a href="http://github.com/centime/reverjs">GitHub</a></li>
+    <li>You might also like <a href="http://centime.org/jsfsck">jsf$ck</a></li>
+    <li>Style shamelessly taken from <a href="http://jsfuck.com/">JSFuck</a></li>
+  </ul>
+</div>
   <script>
-/**/
-    // Breaks:
-    //   -run
-          // }}$$
-          // }*$
-    //       lastline = //comment --> if(...){+'\n'}
-    //   -symmetry
-    //       `
-    
-  // Warning: "reverJS" and "SJrever" are defined in the context the code is ran in. But can be rewritten safely.
-    var reverJS = ($=>{
+
+  var reverJS = ($=>{
       var $$={'$':
         '/*****************************************************************/\n'+
-        '/*                http://centime.org/reverJS                    */\n'+
+        '/*                http://centime.org/reverJS                     */\n'+
         '/*     Reverse                                   */([[[0]["reverse"\n'+
         '/*     Javascript                            */]][0+!!+"javascript"\n'+
         '/*     Constructor                           */+!!+0]["constructor"\n'+
         '/*               */]][0](["reverJS"],["return"][0+!!+"~palindromes"\n'+
-        '+!!+0]+"  (SJrever=>"+[[]+!+[]][0][3]+"val"+"(reverJS))"))(`',
+        '+!!+0]+"  (_=>"+[[]+!+[]][0][3]+"val"+"(reverJS))"))(`\n',
         '$$':'replace','$$$':'length',
         '$$$$':($=>$.split('').reverse().join('')[$$.$$](
           /\(|\)|\[|\]|\{|\}|\\|\/|<|>/g,$=>({
@@ -135,18 +251,13 @@ var fibonacci = function(){
           ))).join(' '))+$[0]+$$$
           )
         };
-        return ($=>$$.$+'\\/**\\/\n'
+        return ($=>$$.$
           +($=$[$$.$$](/\\/g,'\\\\')
-             [$$.$$](/`/g,'\\`')
-             [$$.$$](/(\$\{|\}\$)+/g,($=>$.replace(/(.)/g,'${"$1"}')))
-             [$$.$$](/(\*)+/g,($=>'${"'+$+'"}'))
-             [$$.$$](/\//g,'\\/')
-            )
-          +$$.$$$$$$(['`+\'\\ /*\\ \/\'+`',$])
-          +$$.$$$$$(
-            $$.$$$$($)[$$.$$](/(\\)*`/g,'\\`')
-            )
-          +'\n\\/**\\/'
+            [$$.$$](/\$\{/g,'$\\{')
+            [$$.$$](/\}/g,"${['\}/'][0][0]}")
+            [$$.$$](/`/g,"${['\`/'][0][0]}"))
+          +$$.$$$$$$(['`,`',$])
+          +$$.$$$$$($$.$$$$($))
           +$$.$$$$($$.$)[$$.$$](/\\/g,'/')
         ) 
       })()
@@ -173,21 +284,65 @@ var fibonacci = function(){
         esprima.parse($("input").value, { tolerant: true, loc: true });
       } catch (e) {
         errors = true;
-        alert('Your code contains errors');
-      }
+        alert('Your input code contains errors');
+      };
       if (!errors) {
         eval(rawOutput);
-      }
-      return false;
+      };
     };
     
     reverse();
     hljs.highlightBlock(outputElement);
 
+    $("revDemo").onclick = function(){
+      $("input").value = revDemo;
+      reverse();
+    };
+
     $("mandel").onclick = function(){
       $("input").value = mandelCode;
-      hljs.highlightBlock(outputElement)
+      reverse();
     };
+    
+    var revDemo = `reverJSDemo = ($=>{
+    var $$={'$':
+      '/*****************************************************************/\\n'+
+      '/*                http://centime.org/reverJS                     */\\n'+
+      '/*     Reverse                                   */([[[0]["reverse"\\n'+
+      '/*     Javascript                            */]][0+!!+"javascript"\\n'+
+      '/*     Constructor                           */+!!+0]["constructor"\\n'+
+      '/*               */]][0](["reverJS"],["return"][0+!!+"~palindromes"\\n'+
+      '+!!+0]+"  (_=>"+[[]+!+[]][0][3]+"val"+"(reverJS))"))(\`\\n',
+      '$$':'replace','$$$':'length',
+      '$$$$':($=>$.split('').reverse().join('')[$$.$$](
+        /\\(|\\)|\\[|\\]|\\{|\\}|\\\\|\\/|<|>/g,$=>({
+          '(':')',')':'(','[':']',']':'[',
+          '{':'}','}':'{','\\\\':'/','/':'\\\\','<':'>','>':'<'
+        })[$])),
+      '$$$$$':($=>($=$.split('\\n'))[0]
+        +($[$$.$$$]>1?'\\n':'')
+        +$.slice(1).map($=>Array(Math.max(
+            ($$.$.indexOf('\\n')+1)-$[$$.$$$],0
+          )).join(' ')
+        +$).join('\\n')),
+      '$$$$$$':($=>($$$=Array(Math.floor(Math.max(
+          1+(($$.$.split('\\n')[0][$$.$$$])
+          -(($$$=$[1].split('\\n'))[$$$[$$.$$$]-1][$$.$$$]*2)
+          -($[0][$$.$$$]))/2,
+          0
+        ))).join(' '))+$[0]+$$$
+        )
+      };
+      return ($=>$$.$
+        +($=$[$$.$$](/\\\\/g,'\\\\\\\\')
+          [$$.$$](/\\$\\{/g,'$\\\\{')
+          [$$.$$](/\\}/g,"$\{['\\}/'][0][0]}")
+          [$$.$$](/\`/g,"$\{['\\\`/'][0][0]}"))
+        +$$.$$$$$$(['\`,\`',$])
+        +$$.$$$$$($$.$$$$($))
+        +$$.$$$$($$.$)[$$.$$](/\\\\/g,'/')
+      ) 
+    })()`;
 
     var mandelCode = `
 $('input').outerHTML='<pre id="P"></p>';
@@ -210,9 +365,26 @@ setTimeout(function()
                            "nnerHTML"       ]
                             T  /*aem1k*/
                                =  -
-                        2`
+                                 2`
 
   </script>
+
+  <!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["setDomains", ["*.centime.org"]]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//centime.org/piwik/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//centime.org/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
 
 </body>
 </html>
