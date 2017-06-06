@@ -202,14 +202,14 @@ We will use this to return a closure that can be called with meaningless argumen
   Now that the wrapper is working, all there is left to do is to prepare INPUT_CODE, as a string, to go into our eval function. Since we're using multi-lines strings declared with <strong>`</strong>, we want to escape this character. But <strong>we need both the original and the symmetric to be escaped</strong>, so <strong>\`</strong>, which reverse is <strong>`/</strong>, won't do it.
 </p>
 <p>
-  The trick I used rely on the inline expressions you can put in template literals. <strong>`${'`/'[0]}`</strong> returns <strong>'`'</strong>, and the reverse <strong>`{[0]'\`'}$`</strong> makes the inner <strong>`</strong> harmless.
+  The trick I used relies upon inline expressions inside template literals. <strong>`${'`/'[0]}`</strong> returns <strong>'`'</strong>, and the reverse <strong>`{[0]'\`'}$`</strong> isn't even executed.
 </p>
 <p>
-  Since the above solution could break in situations The trick I used rely on the inline expressions you can put in template literals. <strong>`${'`/'[0]}`</strong> returns <strong>'`'</strong>, and the reverse <strong>`{[0]'\`'}$`</strong> makes the inner <strong>`</strong> harmless.
+  Since the above solution would throw an error when the reversed pattern is repeated (as in: {[0]'\`'}<strong>${[0]'\`'}</strong>$). I needed this also to be reversable. Thus the final escaped form: <strong>`${['`/'][0][0]}`</strong>
 </p>
-<textarea>
-(/`/g,"${['\`/'][0][0]}")
-</textarea>
+<p>
+  <strong>We have now the reversable wrapper able to execute the code inputed as a string, and a reversable escape sequence. Using them together gives the presented result.</strong>
+</p>
 
   <h3>Links</h3>
   

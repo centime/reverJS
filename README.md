@@ -1,10 +1,8 @@
 # reverJS - the Reverse Javascript Constructor
 
-Wrap your javascript code into a ~palindrome !
+Wrap your javascript code into a ~palindrome ! You will get *a symmetrical version of your code* (hopefully fully functional).
 
 ## Example
-
-Live examples at [http://centime.org/reverJS](http://centime.org/reverJS)
 
 ~palindrome for ``alert('reverJS')``:
 
@@ -26,7 +24,7 @@ alert('reverJS')                `,`                ('SJrever')trela
 /*****************************************************************/
 ```
 
-
+Generate ~palindromes for your own code at [http://centime.org/reverJS](http://centime.org/reverJS)
 
 ## Wrap your javascript code into a ~palindrome
 
@@ -114,13 +112,12 @@ Adding some complexity just because we can:
 
 Now that the wrapper is working, all there is left to do is to prepare INPUT_CODE, as a string, to go into our eval function. Since we're using multi-lines strings declared with `, we want to escape this character. But *we need both the original and the symmetric to be escaped*, so \`, which reverse is `/, won't do it.
 
-The trick I used rely on the inline expressions you can put in template literals. *`${'`/'[0]}`* returns '`', and the reverse *`{[0]'\`'}$`* makes the inner ` harmless.
+The trick I used relies upon inline expressions inside template literals. `${'`/'[0]}` returns '`', and the reverse *`{[0]'\`'}$`* isn't even executed.
 
-Since the above solution could break in situations The trick I used rely on the inline expressions you can put in template literals. *`${'`/'[0]}`* returns '`', and the reverse *`{[0]'\`'}$`* makes the inner ` harmless.
+Since the above solution would throw an error when the reversed pattern is repeated ({[0]'\`'}*${[0]'\`'}*$). I needed this also to be reversable. Thus the final escaped form: `${['\`/'][0][0]}`
 
-```js
-(/`/g,"${['\`/'][0][0]}")
-```
+We have now the reversable wrapper able to execute the code inputed as a string, and a reversable escape sequence. Using them together gives the presented result. 
+
 
 ## Links
 
